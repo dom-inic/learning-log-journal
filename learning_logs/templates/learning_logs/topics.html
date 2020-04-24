@@ -1,0 +1,42 @@
+{% extends "learning_logs/base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	{% block content %}
+	<title>topics</title>
+	<style type="text/css">
+		ul {
+    		list-style-type: none;
+    		margin: 0;
+    		padding: 0;
+			}
+	</style>
+</head>
+<body>
+	<h2> Topics </h2>
+	{% if topics %}
+	
+	<ul>
+		{% for topic in topics %}
+		<li>
+			<a href="{% url 'learning_logs:topic' topic.id %}"> {{ topic }}</a>
+		</li>
+		{% empty %}
+		<li>no topics have been added as per now. create your own topic today</li>
+		{% endfor %}
+	</ul>
+	{% else %}
+	<p> no topics have been added yet</p>
+	{% endif %}
+	<br>
+	<h2>create a new topic below</h2>
+	<br>
+	<button style="background-color: grey;"><a href="{% url 'learning_logs:new_topic' %}" style="text-decoration-color: blue;"> Add a new topic</a></button>
+		
+	
+		
+
+	{% endblock content %}
+</body>
+</html>

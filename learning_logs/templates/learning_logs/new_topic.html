@@ -1,0 +1,18 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block content %}
+<h1> create a new topic. learning is all about keeping track of what you have learnt </h1> 
+
+
+
+<p> Add a new topic:</p>
+<form action="{% url 'learning_logs:new_topic' %}" method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button name="submit">add topic</button>
+	
+</form>
+
+
+
+{% endblock content %}
