@@ -3,25 +3,27 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from . models import Topic, Entry
 from . forms import TopicForm, EntryForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
 	""" the home_page for learning log"""
 	return render(request, 'learning_logs/index.html')
 
-
+@login_required
 def topics(request):
  	"""Show all topics."""
- 	topics = Topic.objects.order_by('date_added')
+ 	topics = Topic.objects.filter(owner=request.user).order_by('date_added')
  	context = {'topics': topics}
  	return render(request, 'learning_logs/topics.html', context)
 
+@login_required
 def topic(request, topic_id):
 	""" show a single topic and all its entries """
 	topic = Topic.objects.get(id=topic_id)
 	entries = topic.entry_set.order_by('-date_added')
 	context = {'topic': topic, 'entries': entries}
 	return render(request, 'learning_logs/topic.html', context)
-
+@login_required
 def new_topic(request):
 	""" allow users to create a new topic"""
 	if request.method != 'POST':
@@ -38,6 +40,8 @@ def new_topic(request):
 
 	return render(request, 'learning_logs/new_topic.html', context)
 
+
+@login_required
 def new_entry(request,topic_id):
 	""" allow users to create a new entry associated with a given topic"""
 	topic = Topic.objects.get(id=topic_id)
@@ -57,6 +61,7 @@ def new_entry(request,topic_id):
 	context = {'topic': topic, 'form': form}
 	return render(request, 'learning_logs/new_entry.html', context)
 
+@login_required
 def edit_entry(request, entry_id):
 	""" allow user to edit the entries that they have already added"""
 	entry = Entry.objects.get(id=entry_id)
